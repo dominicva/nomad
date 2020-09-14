@@ -8,16 +8,16 @@
     <link rel="stylesheet" href="../styles/forms.css" />
     <link rel="stylesheet" href="../styles/card.css" />
     <link rel="stylesheet" href="../styles/trip.css" />
-    <script src="../js/" defer></script>
+    <script src="../js/createTrip.js" defer></script>
   </head>
   <body>
     <h1>Nomad – your trello for travel</h1>
 
     <form class="trip__form active-form" action="/">
-      <label for="trip">Give your trip a name</label>
-      <input type="text" name="trip" />
+      <label for="trip__name">Give your trip a name</label>
+      <input id="trip__name--form-input" type="text" name="trip__name" />
       <label for="trip__date">Dates for your trip</label>
-      <input type="date" name="trip__date" id="trip__date">
+      <input type="date" name="trip__date" id="trip__date--form-input">
       <button type="submit">Create trip</button>
     </form>
 
