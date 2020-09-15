@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="../styles/forms.css" />
     <link rel="stylesheet" href="../styles/card.css" />
     <link rel="stylesheet" href="../styles/trip.css" />
+    <!-- <script src="../js/trip.js" type="module" defer></script> -->
     <script src="../js/createTrip.js" defer></script>
   </head>
   <body>
@@ -17,22 +18,21 @@
       <label for="trip__name">Give your trip a name</label>
       <input id="trip__name--form-input" type="text" name="trip__name" />
       <label for="trip__date">Dates for your trip</label>
-      <input type="date" name="trip__date" id="trip__date--form-input">
+      <input type="date" name="trip__date" id="trip__date--form-input" />
       <button type="submit">Create trip</button>
     </form>
 
     <form class="card__form" action="/">
-      <label for=""
+      <label for="card__name"
         >A card is a building-block of your trip. It could be a place, or a
         bucket where you save some links. It's really up to you.</label
       >
-      <input type="text" />
+      <input id="card__name--form-input" type="text" name="card__name" />
       <button>Add card</button>
     </form>
 
     <main id="trip">
-      <h2 class="trip__name">CA road trip</h2>
-      <article class="card">
+      <!-- <article class="card">
         <div class="card__image"></div>
         <h3 class="card__name">Venice Beach</h3>
         <div>
@@ -139,7 +139,7 @@
             </tr>
           </table>
         </div>
-      </article>
+      </article> -->
     </main>
   </body>
 </html>

@@ -1,0 +1,3 @@
+// const tripObj = {};
+
+// exports = { tripObj };

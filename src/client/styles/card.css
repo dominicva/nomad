@@ -4,7 +4,6 @@
 }
 
 .card__image {
-  background-image: url("https://cdn.pixabay.com/photo/2017/04/05/01/16/tropical-2203737_1280.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   height: 320px;
