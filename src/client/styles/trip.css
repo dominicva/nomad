@@ -4,3 +4,7 @@
   grid-template-columns: repeat(auto-fit, minmax(256px, 1fr));
   grid-gap: 2rem;
 }
+
+.trip__name {
+  margin: 1rem 0 0.5rem 0;
+}

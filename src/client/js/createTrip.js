@@ -1,14 +1,18 @@
-// global (for now) UI elements
+// global (for now) UI elements and variables
 const tripFormEl = document.querySelector('.trip__form');
 const cardFormEl = document.querySelector('.card__form');
 
+let tripNameFormInput = document.getElementById('trip__name--form-input');
+let tripDateFormInput = document.getElementById('trip__date--form-input');
+let cardNameFormInput = document.getElementById('card__name--form-input');
+
+let cardId = 0;
+
 // refactor: trip class to be imported from another file
 class Trip {
-  constructor() {
-    const tripNameFormInput = document.getElementById('trip__name--form-input')
-      .value;
-    this.name = tripNameFormInput;
-    this.date;
+  constructor(name, date) {
+    this.name = name;
+    this.date = date;
     this.cards = [];
   }
 
@@ -27,20 +31,21 @@ class Trip {
   }
 }
 
-// refactor: import card class from another file
+// refactor: import class from another file
 class Card {
-  constructor() {
-    const cardNameFormInput = document.getElementById('card__name--form-input')
-      .value;
-    this.imageUrl =
-      'https://cdn.pixabay.com/photo/2017/04/05/01/16/tropical-2203737_1280.jpg';
-    this.name = cardNameFormInput;
-    this.location;
-    // this.weather = {
-    //   avgTemp,
-    //   minTemp,
-    //   maxTemp,
-    // };
+  constructor(imageUrl, name, location, weather) {
+    this.id;
+    this.imageUrl = imageUrl;
+    this.name = name;
+    this.location = location;
+    this.weather = weather;
+  }
+}
+
+// refactor: import class from another file
+class CardEntry {
+  constructor(card) {
+    this.card = card;
   }
 
   render() {
@@ -50,8 +55,8 @@ class Card {
     cardEl.className = 'card';
 
     cardEl.innerHTML = `
-    <div class="card__image" style="background-image: url(${this.imageUrl});"></div>
-        <h3 class="card__name">${this.name}</h3>
+    <div class="card__image" style="background-image: url(${this.card.imageUrl});"></div>
+        <h3 class="card__name">${this.card.name}</h3>
         <div>
           Location:
           <a
@@ -77,9 +82,13 @@ class Card {
         </div>
     `;
 
+    cardNameFormInput.value = '';
+
     renderHook.append(cardEl);
   }
 }
+
+// ==>> form submit handlers
 
 // => create trip submit event callback
 const createTripHandler = (event) => {
@@ -89,7 +98,7 @@ const createTripHandler = (event) => {
   tripFormEl.classList.toggle('active-form');
   cardFormEl.classList.toggle('active-form');
 
-  const newTrip = new Trip();
+  const newTrip = new Trip(tripNameFormInput.value, tripDateFormInput.value);
   newTrip.render();
 
   // test log
@@ -100,11 +109,19 @@ const createTripHandler = (event) => {
 const addCardHandler = (event) => {
   event.preventDefault();
 
-  const newCard = new Card();
-  newCard.render();
+  const newCard = new Card(
+    'https://cdn.pixabay.com/photo/2017/04/05/01/16/tropical-2203737_1280.jpg',
+    cardNameFormInput.value
+  );
+  newCard.id = cardId;
+  cardId += 1;
+
+  const newCardEntry = new CardEntry(newCard);
+  newCardEntry.render();
 
   // test log
   console.log('Newly created card', newCard);
+  console.log('Newly created card entry', newCardEntry);
 };
 
 // submit button event listeners
