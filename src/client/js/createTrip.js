@@ -48,6 +48,12 @@ class CardEntry {
     this.card = card;
   }
 
+  deleteCard() {
+    console.log('Deleting card');
+    console.log(this.card);
+
+  }
+
   render() {
     const renderHook = document.getElementById('trip');
 
@@ -80,13 +86,20 @@ class CardEntry {
             </tr>
           </table>
         </div>
+        <button class="delete-btn">Delete card</button>
     `;
+
+    const deleteCardBtn = cardEl.querySelector('.delete-btn');
+    // without bind(this) JS binds this to the source of the event – i.e. the button
+    deleteCardBtn.addEventListener('click', this.deleteCard.bind(this));
 
     cardNameFormInput.value = '';
 
     renderHook.append(cardEl);
   }
 }
+
+class App {}
 
 // ==>> form submit handlers
 
