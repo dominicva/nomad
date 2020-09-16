@@ -45,7 +45,7 @@ class Trip extends Component {
   addCardHandler(event) {
     event.preventDefault();
 
-    let cardNameFormInput = document.getElementById('card__name--form-input');
+    let cardNameFormInput = document.getElementById(`card__name--form-input${this.id}`);
 
     const newCard = new Card(
       'https://cdn.pixabay.com/photo/2017/04/05/01/16/tropical-2203737_1280.jpg',
@@ -78,7 +78,7 @@ class Trip extends Component {
       <form class="card__form" action="/">
         <label for="card__name">A card is a building-block of your trip. It could be a place, or a
           bucket where you save some links. It's really up to you.</label>
-        <input id="card__name--form-input" type="text" name="card__name" />
+        <input id="card__name--form-input${this.id}" type="text" name="card__name" />
         <button class="card__form__submit-btn">Add card</button>
       </form>
     `;
