@@ -1,5 +1,6 @@
 form {
-  display: none;
+  /* display: none; */
+  display: flex;
   flex-direction: column;
   max-width: 600px;
 }
@@ -28,7 +29,7 @@ button:hover {
   cursor: pointer;
 }
 
-.active-form {
-  display: flex;
-}
+/* .inactive-form {
+  display: none;
+} */
 

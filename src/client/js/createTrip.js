@@ -1,33 +1,91 @@
 // global (for now) UI elements and variables
 const tripFormEl = document.querySelector('.trip__form');
-const cardFormEl = document.querySelector('.card__form');
-
-let tripNameFormInput = document.getElementById('trip__name--form-input');
-let tripDateFormInput = document.getElementById('trip__date--form-input');
-let cardNameFormInput = document.getElementById('card__name--form-input');
 
 let cardId = 0;
 
+class Component {
+  constructor(renderHookId) {
+    this.hookId = renderHookId;
+  }
+
+  createRootElement(tag, cssClasses, attributes) {
+    const rootElement = document.createElement(tag);
+
+    if (cssClasses) {
+      rootElement.className = cssClasses;
+    }
+
+    if (attributes && attributes.length > 0) {
+      for (const attr of attributes) {
+        rootElement.setAttribute(attr.name, attr.value);
+      }
+    }
+    document.getElementById(this.hookId).append(rootElement);
+    return rootElement;
+  }
+}
+
+class ElementAttribute {
+  constructor(attrName, attrValue) {
+    this.name = attrName;
+    this.value = attrValue;
+  }
+}
+
 // refactor: trip class to be imported from another file
-class Trip {
-  constructor(name, date) {
+class Trip extends Component {
+  constructor(renderHookId, name, date) {
+    super(renderHookId);
     this.name = name;
     this.date = date;
+    this.id = this.name + this.date;
     this.cards = [];
   }
 
+  addCardHandler(event) {
+    event.preventDefault();
+
+    let cardNameFormInput = document.getElementById('card__name--form-input');
+
+    const newCard = new Card(
+      'https://cdn.pixabay.com/photo/2017/04/05/01/16/tropical-2203737_1280.jpg',
+      cardNameFormInput.value
+    );
+    newCard.id = cardId;
+    cardId += 1;
+
+    const newCardEntry = new CardEntry(this.id, newCard);
+    newCardEntry.render();
+
+    cardNameFormInput.value = '';
+
+    // test log
+    console.log('Newly created card', newCard);
+    console.log('Newly created card entry', newCardEntry);
+  }
+
   render() {
-    const renderHook = document.getElementById('trip');
+    // for now setting trip ID to its name concat. with its date
+    const tripEl = this.createRootElement('section', 'trip', [
+      { name: 'id', value: this.id },
+    ]);
 
-    const tripMetaDataEl = document.createElement('div');
-    tripMetaDataEl.className = 'trip__meta-data';
-
-    tripMetaDataEl.innerHTML = `
-    <h2 class="trip__name">${this.name}</h2>
+    tripEl.innerHTML = `
+      <div class="trip-meta-data__container">
+        <h2 class="trip__name">${this.name}</h2>
         <p class="trip__date">${this.date}</p>
+      </div>
+      <form class="card__form" action="/">
+        <label for="card__name">A card is a building-block of your trip. It could be a place, or a
+          bucket where you save some links. It's really up to you.</label>
+        <input id="card__name--form-input" type="text" name="card__name" />
+        <button class="card__form__submit-btn">Add card</button>
+      </form>
     `;
 
-    renderHook.append(tripMetaDataEl);
+    const addCardForm = tripEl.querySelector('.card__form');
+    // without bind(this) JS binds this to the source of the event – i.e. the form
+    addCardForm.addEventListener('submit', this.addCardHandler.bind(this));
   }
 }
 
@@ -43,22 +101,19 @@ class Card {
 }
 
 // refactor: import class from another file
-class CardEntry {
-  constructor(card) {
+class CardEntry extends Component {
+  constructor(renderHookId, card) {
+    super(renderHookId);
     this.card = card;
   }
 
   deleteCard() {
     console.log('Deleting card');
     console.log(this.card);
-
   }
 
   render() {
-    const renderHook = document.getElementById('trip');
-
-    const cardEl = document.createElement('article');
-    cardEl.className = 'card';
+    const cardEl = this.createRootElement('article', 'card');
 
     cardEl.innerHTML = `
     <div class="card__image" style="background-image: url(${this.card.imageUrl});"></div>
@@ -92,14 +147,10 @@ class CardEntry {
     const deleteCardBtn = cardEl.querySelector('.delete-btn');
     // without bind(this) JS binds this to the source of the event – i.e. the button
     deleteCardBtn.addEventListener('click', this.deleteCard.bind(this));
-
-    cardNameFormInput.value = '';
-
-    renderHook.append(cardEl);
   }
 }
 
-class App {}
+// class App {}
 
 // ==>> form submit handlers
 
@@ -107,36 +158,40 @@ class App {}
 const createTripHandler = (event) => {
   event.preventDefault();
 
-  // access relevant UI elements
-  tripFormEl.classList.toggle('active-form');
-  cardFormEl.classList.toggle('active-form');
+  let tripNameFormInput = document.getElementById('trip__name--form-input');
+  let tripDateFormInput = document.getElementById('trip__date--form-input');
 
-  const newTrip = new Trip(tripNameFormInput.value, tripDateFormInput.value);
+  const newTrip = new Trip(
+    'trips__container',
+    tripNameFormInput.value,
+    tripDateFormInput.value
+  );
   newTrip.render();
+
+  tripNameFormInput.value = '';
+  tripDateFormInput.value = '';
 
   // test log
   console.log('Newly created trip', newTrip);
 };
 
-// => add card submit event callback
-const addCardHandler = (event) => {
-  event.preventDefault();
-
-  const newCard = new Card(
-    'https://cdn.pixabay.com/photo/2017/04/05/01/16/tropical-2203737_1280.jpg',
-    cardNameFormInput.value
-  );
-  newCard.id = cardId;
-  cardId += 1;
-
-  const newCardEntry = new CardEntry(newCard);
-  newCardEntry.render();
-
-  // test log
-  console.log('Newly created card', newCard);
-  console.log('Newly created card entry', newCardEntry);
-};
-
 // submit button event listeners
 tripFormEl.addEventListener('submit', createTripHandler);
-cardFormEl.addEventListener('submit', addCardHandler);
+
+// class CreateTripForm {}
+
+// class TripsContainer {}
+
+// class Trip extends Component {}
+
+// class AddCardForm {}
+
+// class TripMetaData {}
+
+// class CardsContainer {}
+
+// class CardEntry extends Component {}
+
+// class Card {}
+
+// class App {}
