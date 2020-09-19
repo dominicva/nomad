@@ -32,8 +32,7 @@ export class TripsContainer extends Component {
   }
 
   render() {
-    console.log([new ElementAttribute('id', 'trips__container')]);
-    const mainEl = this.createRootElement('main', false, [
+    this.createRootElement('main', false, [
       new ElementAttribute('id', 'trips__container'),
     ]);
 

@@ -57,7 +57,6 @@ export class Trip extends Component {
   }
 
   render() {
-    // setting trip ID to its name concat. with its start and end dates
     const tripEl = this.createRootElement('section', 'trip', [
       new ElementAttribute('id', this.id),
     ]);
