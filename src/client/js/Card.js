@@ -1,4 +1,4 @@
-import { Component } from './Component.js';
+import { Component, ElementAttribute } from './Component.js';
 
 export class Card {
   constructor(imageUrl, name, location, weather) {
@@ -10,17 +10,11 @@ export class Card {
   }
 }
 
-// refactor: import class from another file
 export class CardEntry extends Component {
   constructor(renderHookId, card) {
     super(renderHookId);
     this.card = card;
-  }
-
-  render() {
-    const cardEl = this.createRootElement('article', 'card');
-
-    cardEl.innerHTML = `
+    this.cardHtml = `
     <div class="card__image" style="background-image: url(${this.card.imageUrl});"></div>
         <h3 class="card__name">${this.card.name}</h3>
         <div>
@@ -48,5 +42,12 @@ export class CardEntry extends Component {
         </div>
         <button class="delete-btn">Delete card</button>
     `;
+  }
+
+  render(cardId) {
+    const cardEl = this.createRootElement('article', 'card', [
+      new ElementAttribute('id', cardId),
+    ]);
+    cardEl.innerHTML = this.cardHtml;
   }
 }
